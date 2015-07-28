@@ -1,4 +1,44 @@
 \chapter{Aplikacja sterująca}
 \label{cha:aplikacja_sterujaca}
+W niniejszym rozdziale przedstawiono informacje na temat aplikacji sterującej. Zaprezentowano kolejne etapy przygotowania platformy sprzętowej, które wymagane są do weryfikacji działania systemu czasu rzeczywistego o ostrych ograniczeniach czasowych (ang. hard real-time).
+
+\section{Konfiguracja beaglebone black}
+
+\subsection{System czasu rzeczywistego}
+System czasu rzeczywistego (ang. real-time system) to system, który przetwarza każdy rodzaj informacji i który musi reagować na sygnały wejściowe - bodźce generowane z zewnątrz w skończonym i określonym czasie. Jego poprawne działanie zależy zarówno od prawidłowych rezultatów logicznych, jak również od czasu reakcji.
+Na podstawie tych kryteriów są one dzielone na:
+\begin{itemize}
+	\item Systemy o ostrych wymaganiach czasowych (ang. hard real-time) - wymagania czasowe muszą być skrupulatnie przestrzegane, naruszenie ram czasowych może wpłynąć na życie ludzkie, środowisko czy też sam system,
+ 
+	\item Systemy o słabych wymaganiach czasowych (ang. soft real-time) – głównym kryterium oceny tych jest średni czas odpowiedzi. Sporadyczne opóźnienie nie powoduje zagrożenia lecz jedynie wpływa negatywnie na ocenę całego systemu,
+
+	\item Systemy o solidnych wymaganiach czasowych (ang. firm real-time) - są one kombinacją systemów o wymaganiach ostrych oraz słabych. Naruszenie kryterium czasowych może pojawiać się okazjonalnie. Często dla lepszej oceny systemu stosuje się ograniczenia czasowe o charakterze "słabym" - krótsze, których przekroczenie nie powoduje katastrofy oraz "ostrym" - dłuższe, których naruszenie oznacza nieprawidłowe działanie systemu. 
+
+\end{itemize}
+
+Bez względu na to które z powyższych kryteriów są spełniane przez system konieczne jest, aby każdy z nich charakteryzował się następującymi cechami:
+
+\begin{itemize}
+	\item Ciągłość działania - powinny działać nieprzerwanie w okresie od uruchomienia systemu do jego wycofania,
+	
+	\item Zależność od otoczenia - zachowanie opiera rozpatruje się w kontekście otoczenia. Prowadzone obliczenia zależą od zdarzeń oraz danych pochodzących z zewnątrz układu,
+	
+	\item Współbieżność - struktura systemu narzuca, aby jednoczesne zdarzenia były obsługiwane równocześnie przez szereg procesów,
+	
+	\item Przewidywalność - zdarzenia i dane generowane przez otoczenie pojawiają się przypadkowo co nie narusza deterministycznego zachowania systemu,
+	
+	\item Punktualność - odpowiedź systemu na bodźce zewnętrzne powinna być dostarczona w odpowiednich momentach - wymaganych ramach czasowych.
+\end{itemize}
+
+
+
+\subsection{Przygotowanie systemu operacyjnego}
+Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zastosowanie platformy sprzętowej typu mini PC wraz z systemem operacyjnym typu UNIX, ważne jest, aby wyeliminować wszelkie możliwe przerwania oraz inne aspekty, które wpływają na płynność oraz czas wykonywania się aplikacji sterującej.
+
+
+
+
+\subsection{Analiza operacji zmiennoprzecinkowych}
+
 
 \section{Architektura systemu sterującego}
