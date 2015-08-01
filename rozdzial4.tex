@@ -16,7 +16,7 @@ Na podstawie tych kryteriów są one dzielone na:
 
 \end{itemize}
 
-Bez względu na to które z powyższych kryteriów są spełniane przez system konieczne jest, aby każdy z nich charakteryzował się następującymi cechami:
+Bez względu na to do której grupy systemów zalicza się aplikację musi ona charakteryzować się następującymi cechami:
 
 \begin{itemize}
 	\item Ciągłość działania - powinny działać nieprzerwanie w okresie od uruchomienia systemu do jego wycofania,
@@ -30,15 +30,30 @@ Bez względu na to które z powyższych kryteriów są spełniane przez system k
 	\item Punktualność - odpowiedź systemu na bodźce zewnętrzne powinna być dostarczona w odpowiednich momentach - wymaganych ramach czasowych.
 \end{itemize}
 
+Z pewnością aplikacja sterująca obiektami latającymi powinna spełniać wszystkie powyższe założenia. Gdyby, któreś z nich nie zostało spełnione jakiekolwiek próby sterowania zakończyły by się porażką.
+
+Dynamika wielokomórkowców wymaga od aplikacji bardzo szybkiego czasu reakcji na zewnętrzne impulsy. Opóźnienie sterowania w takim przypadku powoduje bardzo negatywne skutki do których zaliczamy brak kontroli nad obiektem co zazwyczaj dąży do utraty stabilności w powietrzu, a następnie katastrofy po zetknięciu się z przeszkodą.
+
+Na podstawie powyższych definicji aplikację sterującą zdecydowanie zalicza się do systemu hard-real time. 
 
 
 \subsection{Przygotowanie systemu operacyjnego}
 Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zastosowanie platformy sprzętowej typu mini PC wraz z systemem operacyjnym typu UNIX, ważne jest, aby wyeliminować wszelkie możliwe przerwania oraz inne aspekty, które wpływają na płynność oraz czas wykonywania się aplikacji sterującej.
 
+Zostało to zapewnione przez instalację systemu operacyjnego wyposażonego w jądro czasu rzeczywistego (ang. real-time kernel). Jądro to określane jest również jako w pełni wywłaszczalne. Oznacza to, iż dopuszczane jest wywłaszczenie procesu działającego w trybie jądra. Cecha ta wraz z wcześniej narzuconymi priorytetami dla poszczególnych procesów gwarantuje, iż aplikacja sterująca uruchomiona z wysokim priorytetem. Nie zostanie wywłaszczona na zbyt długi czas przez inne procesy systemowe. 
 
+Zabieg ten pozwala nam spełnić podstawową cechę systemów czasu rzeczywistego, którą jest punktualność.
 
 
 \subsection{Analiza operacji zmiennoprzecinkowych}
+Dobrze zaprojektowana aplikacja sterująca statkami latającymi powinna być możliwa do uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych do ich budowy procesorów.
+
+Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. Konfiguracja miała na celu uwydatnienie problemu błędu obcięcia liczb zmiennoprzecinkowych 
+
+\subsubsection{Testy}
+Do testów wykorzystano komputer stacjonarny z 64 bitowym procesorem Intel i5-4670 3.40 Ghz oraz układ beaglebone black, który został wyposażony w procesor 32 bitowy ARM Cortex-A8 o częstotliwości taktowania 1GHz.
+
+W celu uwydatnienia problemu stworzono sieć neuronową posiadającą po jednej z warstw wejściowej, ukrytej, wyjściowej. Wagi poszczególnych neuronów zostały dobrane w sposób losowy tak, jednak wszystkich z nich wykorzystują maksymalną dostępną dokładność. Następnie na wejście sieci podawana jest stała wartość. Po jej przetworzeniu otrzymujemy wynik  
 
 
 \section{Architektura systemu sterującego}
