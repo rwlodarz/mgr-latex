@@ -1,10 +1,11 @@
 \chapter{Aplikacja sterująca}
 \label{cha:aplikacja_sterujaca}
-W niniejszym rozdziale przedstawiono informacje na temat aplikacji sterującej. Zaprezentowano kolejne etapy przygotowania platformy sprzętowej, które wymagane są do weryfikacji działania systemu czasu rzeczywistego o ostrych ograniczeniach czasowych (ang. hard real-time).
+W niniejszym rozdziale przedstawiono informacje na temat aplikacji sterującej. Zagadnienia teoretyczne konieczne do zrozumienia problemu, poszczególne etapy przygotowania platformy sprzętowej, oraz proces tworzenia systemu czasu rzeczywistego.
 
-\section{Konfiguracja beaglebone black}
 
-\subsection{System czasu rzeczywistego}
+
+
+\section{System czasu rzeczywistego}
 System czasu rzeczywistego (ang. real-time system) to system, który przetwarza każdy rodzaj informacji i który musi reagować na sygnały wejściowe - bodźce generowane z zewnątrz w skończonym i określonym czasie. Jego poprawne działanie zależy zarówno od prawidłowych rezultatów logicznych, jak również od czasu reakcji.
 Na podstawie tych kryteriów są one dzielone na:
 \begin{itemize}
@@ -30,30 +31,53 @@ Bez względu na to do której grupy systemów zalicza się aplikację musi ona c
 	\item Punktualność - odpowiedź systemu na bodźce zewnętrzne powinna być dostarczona w odpowiednich momentach - wymaganych ramach czasowych.
 \end{itemize}
 
-Z pewnością aplikacja sterująca obiektami latającymi powinna spełniać wszystkie powyższe założenia. Gdyby, któreś z nich nie zostało spełnione jakiekolwiek próby sterowania zakończyły by się porażką.
+Z pewnością aplikacja sterująca obiektami latającymi powinna spełniać wszystkie powyższe założenia. Gdyby któreś z nich nie zostało spełnione jakiekolwiek próby sterowania zakończyły by się porażką.
 
-Dynamika wielokomórkowców wymaga od aplikacji bardzo szybkiego czasu reakcji na zewnętrzne impulsy. Opóźnienie sterowania w takim przypadku powoduje bardzo negatywne skutki do których zaliczamy brak kontroli nad obiektem co zazwyczaj dąży do utraty stabilności w powietrzu, a następnie katastrofy po zetknięciu się z przeszkodą.
+Dynamika wielokomórkowców wymaga od aplikacji bardzo szybkiego czasu reakcji na zewnętrzne impulsy. Opóźnienie sterowania w takim przypadku powoduje bardzo negatywne skutki do których zaliczamy: brak kontroli nad obiektem, utrata stabilności w powietrzu oraz niekontrolowane zetknięciu się z przeszkodą. Wszystkie wymienione zachowania mogą powodować bardzo duże zniszczenia dla modelu, jego otoczenia oraz zagrażać zdrowiu operatora oraz innych osób znajdujących się w zasięgu działania modelu.
 
-Na podstawie powyższych definicji aplikację sterującą zdecydowanie zalicza się do systemu hard-real time. 
+Na podstawie definicji oraz powyższej analizy skutków określono, iż aplikacja sterującą zalicza się do systemu hard-real time. 
 
 
-\subsection{Przygotowanie systemu operacyjnego}
+
+
+\section{Konfiguracja beaglebone black}
+Ze względu na kontynuację prac nad modelem bazowa konfiguracja beaglebone black wraz z dodatkowymi czujnikami oraz urządzeniami peryferyjnymi opisano w pracy
+% TODO: inz Rwlodarz JZrebiec.
+
+W trakcje powstawania niniejszej pracy na rynku dostępne są nowsze czujniki, które mogłyby podnieść jakość oraz częstość pomiarów, jednak ingerencja w konfigurację uniemożliwiła by porównanie algorytmów tradycyjnych z sieciami neuronowym stąd wszystkie testy zostały przeprowadzone na tej samej konfiguracji.
+
+
+
+
+\section{Przygotowanie systemu operacyjnego}
 Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zastosowanie platformy sprzętowej typu mini PC wraz z systemem operacyjnym typu UNIX, ważne jest, aby wyeliminować wszelkie możliwe przerwania oraz inne aspekty, które wpływają na płynność oraz czas wykonywania się aplikacji sterującej.
 
-Zostało to zapewnione przez instalację systemu operacyjnego wyposażonego w jądro czasu rzeczywistego (ang. real-time kernel). Jądro to określane jest również jako w pełni wywłaszczalne. Oznacza to, iż dopuszczane jest wywłaszczenie procesu działającego w trybie jądra. Cecha ta wraz z wcześniej narzuconymi priorytetami dla poszczególnych procesów gwarantuje, iż aplikacja sterująca uruchomiona z wysokim priorytetem. Nie zostanie wywłaszczona na zbyt długi czas przez inne procesy systemowe. 
+Wprowadzono usprawnienie w postaci instalacji systemu operacyjnego wyposażonego w jądro czasu rzeczywistego (ang. real-time kernel). Jądro to określane jest również jako w pełni wywłaszczalne. Oznacza to, iż dopuszczane jest wywłaszczenie procesu działającego w trybie jądra. Cecha ta wraz z wcześniej narzuconymi priorytetami dla poszczególnych procesów gwarantuje, iż aplikacja sterująca, uruchomiona z wysokim priorytetem nie zostanie wywłaszczona na zbyt długi czas przez inne procesy systemowe.
 
 Zabieg ten pozwala nam spełnić podstawową cechę systemów czasu rzeczywistego, którą jest punktualność.
 
 
-\subsection{Analiza operacji zmiennoprzecinkowych}
-Dobrze zaprojektowana aplikacja sterująca statkami latającymi powinna być możliwa do uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych do ich budowy procesorów.
 
-Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. Konfiguracja miała na celu uwydatnienie problemu błędu obcięcia liczb zmiennoprzecinkowych 
 
-\subsubsection{Testy}
+\section{Tworzenie aplikacji niezależnej od platformy sprzętowej}
+Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwa uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych do ich budowy procesorów.
+
+Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. 
+
+
+\subsection{Najważniejsze aspekty}
+Pierwszym, a zarazem najważniejszym aspektem jest problem, który może powstać podczas mnożenia liczb zmiennoprzecinkowych. W przypadku wykonywania tej operacji dwie liczby reprezentowane w postaci binarnej o z góry określonej liczbie dostępnych bietów o określonej liczbie bitów  wynik zapisywany jest do zmiennej o określonej liczbie bitów, co wiąże się z uzyskaniem błędu odcięcia w przypadku nie wystarczającej liczbie bitów potrzebnych do reprezentacji części ułamkowej. 
+
+
+
+Konfiguracja miała na celu uwydatnienie problemu błędu obcięcia liczb zmiennoprzecinkowych 
+
+\subsection{Testy}
 Do testów wykorzystano komputer stacjonarny z 64 bitowym procesorem Intel i5-4670 3.40 Ghz oraz układ beaglebone black, który został wyposażony w procesor 32 bitowy ARM Cortex-A8 o częstotliwości taktowania 1GHz.
 
 W celu uwydatnienia problemu stworzono sieć neuronową posiadającą po jednej z warstw wejściowej, ukrytej, wyjściowej. Wagi poszczególnych neuronów zostały dobrane w sposób losowy tak, jednak wszystkich z nich wykorzystują maksymalną dostępną dokładność. Następnie na wejście sieci podawana jest stała wartość. Po jej przetworzeniu otrzymujemy wynik  
+
+
 
 
 \section{Architektura systemu sterującego}
