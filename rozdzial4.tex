@@ -50,9 +50,11 @@ W trakcje powstawania niniejszej pracy na rynku dostępne są nowsze czujniki, k
 
 
 \section{Przygotowanie systemu operacyjnego}
-Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zastosowanie platformy sprzętowej typu mini PC wraz z systemem operacyjnym typu UNIX, ważne jest, aby wyeliminować wszelkie możliwe przerwania oraz inne aspekty, które wpływają na płynność oraz czas wykonywania się aplikacji sterującej.
+Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zastosowanie platformy sprzętowej typu mini PC wraz z systemem operacyjnym typu UNIX, ważne jest, aby wyeliminować wszelkie możliwe przerwania procesora oraz inne aspekty, które wpływają na płynność oraz czas wykonywania się aplikacji sterującej.
 
 Wprowadzono usprawnienie w postaci instalacji systemu operacyjnego wyposażonego w jądro czasu rzeczywistego (ang. real-time kernel). Jądro to określane jest również jako w pełni wywłaszczalne. Oznacza to, iż dopuszczane jest wywłaszczenie procesu działającego w trybie jądra. Cecha ta wraz z wcześniej narzuconymi priorytetami dla poszczególnych procesów gwarantuje, iż aplikacja sterująca, uruchomiona z wysokim priorytetem nie zostanie wywłaszczona na zbyt długi czas przez inne procesy systemowe.
+
+
 
 Zabieg ten pozwala nam spełnić podstawową cechę systemów czasu rzeczywistego, którą jest punktualność.
 
@@ -66,7 +68,7 @@ Podstawowa wersja aplikacji została poddana testom, które porównały wyniki d
 
 
 \subsection{Najważniejsze aspekty}
-Pierwszym, a zarazem najważniejszym aspektem jest problem, który może powstać podczas mnożenia liczb zmiennoprzecinkowych. W przypadku wykonywania tej operacji dwie liczby reprezentowane w postaci binarnej o z góry określonej liczbie dostępnych bietów o określonej liczbie bitów  wynik zapisywany jest do zmiennej o określonej liczbie bitów, co wiąże się z uzyskaniem błędu odcięcia w przypadku nie wystarczającej liczbie bitów potrzebnych do reprezentacji części ułamkowej. 
+Pierwszym, a zarazem najważniejszym aspektem jest problem, który może powstać podczas mnożenia liczb zmiennoprzecinkowych. W przypadku wykonywania tej operacji dwie liczby reprezentowane w postaci binarnej o z góry określonej liczbie dostępnych bitów o określonej liczbie bitów  wynik zapisywany jest do zmiennej o określonej liczbie bitów, co wiąże się z uzyskaniem błędu odcięcia w przypadku nie wystarczającej liczbie bitów potrzebnych do reprezentacji części ułamkowej. 
 
 
 

@@ -1,10 +1,97 @@
-\chapter{Sztuczne sieci neuronowe}
+\chapter{Sieci neuronowe}
 \label{cha:sztuczne_sieci_neuronowe}
 
-Rozdział ten zawiera informacje na temat sieci neuronowych, ich architektury, zasady działania oraz algorytmów uczenia.
+Rozdział ten zawiera informacje na temat historii rozwoju sieci neuronowych, ich architektury, zasady działania oraz algorytmów uczenia.
 
-\section{Początki sieci neuronowych}
-\label{sec:poczatki_sieci_neuronowych}
+\section{Początki sztucznych sieci neuronowych}
 Początki prac nad poznaniem procesów zachodzących w mózgu datuje się na rok 1943. W pracy McCulloch'a oraz Pitts'a przedstawiono matematyczny model neuronu, który zapoczątkował badania związane z tym tematem. W 1949 roku Donald Hebb odkrył, iż informacje przechowywane w sieci neuronowej są reprezentowane jako wartości wag pomiędzy poszczególnymi neuronami. Na podstawie tych informacji zaproponował on pierwszy algorytm uczenia sieci neuronowej, który został nazwany regułą Hebba. Już wtedy odkryto, iż bardzo dużą zaletą sieci jest równoległy sposób przetwarzania informacji oraz metodologia uczenia, która zastępuje tradycyjny proces programowania. 
+
+\section{Sztuczne sieci neuronowe}
+Sztuczne sieci neuronowe są często określane jako początki sztucznej inteligencji ze względu na ich sposób działania, który przypomina działanie ludzkiego mózgu. Korzystanie z sieci neuronowych wymaga przejścia przez dwa podstawowe etapy, pierwszy z nich określany jest jako uczenie sieci, a drugi testowanie, które jest używane do oceny poprawności działania sieci po jej wytrenowaniu. Istnieją różne algorytmy uczenia sieci neuronowej, najpopularniejszy z nich nazywany jest perceptron wielowarstwowy (ang. multilayer perceptron). Polega on na 
+%TODO: sprawdzic!!!!
+propagacji danych w przód, a następnie przy użyciu algorytmu wstecznej propagacji, modyfikacji odpowiednich wag neuronów. Sztuczne sieci neuronowe są uznawane jako skuteczna metoda do rozpoznawania wzorców. W ich skład wchodzą połączenia między neuronami jaki same neurony, które równolegle przetwarzają dane wejściowe. Podejście to zostało zainspirowane z biologicznego systemu nerwowego.
+
+\section{Biologiczne neurony}
+
+Ludzki mózg składa się z milionów neuronów, które są połączone między sobą przez prawie 10 miliardów synaps. Architektura ta pozwala na równoległe przetwarzanie informacji. Biologiczny neuron został przedstawiony na rysunku %TODO: adnotacja figure
+
+%TODO: wsadzic rysunek
+
+Podstawową funkcję neuronu jest transportowanie przetworzonej informacji w postaci impulsu nerwowego, które są reprezentowane przez krótkotrwałą zmianę potencjału. Są one przewodzone od aksonu do synapsy która znajduje się na jego zakończeniach. 
+
+\section{Sztuczny neuron}
+Sposób działania sztucznego neuronu jest ściśle oparty na działaniu biologicznego neuronu. Posiada on wiele wejść oraz jedno wyjście. Dla lepsze zrozumienia funkcjonowania takiego neuronu wskażmy jego różnice w stosunku do biologicznego. %TODO zmienic cos
+Współczesne komputery posiadają bardzo dużą moc obliczeniową skupiającej się w pojedynczych procesorach taktowanych wysoką częstotliwością. W odróżnieniu ludzki mózg posiada miliardy neuronów, które przetwarzają informacje wolniej niż współczesne procesory. Informacja przenoszona przez bodźce w ludzkim mózgu są reprezentowane przez logikę binarną o określonym progu aktywacji. W przypadku sztucznych neuronów funkcjonalność ta jest realizowane przez funkcje aktywacji, która na podstawie dobranego progu przypisuje wartość logiczną zbliżoną do "1" dla wartości powyżej oraz "0" dla pozostałych. W sztucznych sieciach neuronowych po wykonaniu obliczeń w konkretnym neuronie jego wartość wyjściowa przekazywana jest wzdłuż łańcucha sieci do kolejnych neuronów. 
+W celu lepszego zobrazowania działania sztucznych neuronów często porównywane sa one do przekaźników. Synapsy występujące w ludzkim mózgu są odpowiednikami wag dla poszczególnych wejść neuronów.
+%TODO rysunek ?
+Jak pokazano na rysunku %TODO nr
+wartości na każdym z wejść są przemnażane przez odpowiadające temu wejściu wagi. Jedno wejście posiada statyczną wartość 1, zabieg ten umożliwia sieci neuronowej lepiej przystosowywać się do wzorców. Neuron odpowiada za sumowanie wszystkich wartości, a następnie suma podawana jest na wejście funkcji aktywacji, której wyjście jest jednoznaczne z końcową wartością uzyskaną po przetworzeniu danego wektora wartości wejściowych. 
+
+\section{Nauka sieci}
+
+Nie jest możliwe aby w pełni za modelować pracę ludzkiego mózgu. Nie mniej jednak sztuczne sieci neuronowe pozwalają na rozwiązywanie wiele skomplikowanych zagadnień jak rozpoznawanie wszelkiego rodzaju wzorców oraz wiele innych. Bardzo ciekawą własnością sieci neuronowych jest to, iż nawet przy tej samej architekturze po ówczesnym przygotowaniu są w stanie one rozwiązywać całkowicie różne zagadnienia. Takie przystosowanie określane jest jako nauka sieci (ang. learning),proces ten można porównać do okresu rozwoju noworodka, który na podstawie zdobytych doświadczeń zdobywa nowe umiejętności.
+Naukę dzieli się głównie na dwie podstawowe kategorie:
+\begin{itemize}
+	\item nauczanie z nauczycielem – (nadzorowane) (ang. supervised learning) –  podejście to wymaga nadzoru, w większości jest to zbiór oczekiwanych wartości odpowiedzi dla konkretnych wejść. Dokonuje się w nim próby przewidzenia wyników dla znanych danych wejściowych. Najbardziej znanym algorytmem w tej kategorii jest wsteczna propagacja błędów (ang. backpropagation). Polega ono na uczeniu sieci bazując na błędach. Początkowo wagi połączeń między neuronami są wybierane w sposób losowy, następnie na wejście sici podawany jest wektor wejść z znanymi poszczególnymi wartościami oraz znana jest również wartość oczekiwana dla wyjścia. Jest ona porównywana z aktualnym wyjściem sieci, a następnie na podstawie wielkości tego błędu wyliczana jest wartość korekcji poszczególnych wag każdego z połączeń, tak aby błąd ten został zminimalizowany. Największą wadą algorytmów tego typu jest znajomość dokładnej postaci wektora wyjściowego, która jest ciężka do spełnienia.
+	\item nauczanie bez nauczyciela (nienadzorowane) (ang. unsupervised learning) - podejście to zyskało swoją popularność ze względu na brak konieczności znajomość oczekiwanego wektora danych wyjściowych podczas uczenia sieci. W tym przypadku wyjście sieci nie jest weryfikowane. Do najbardziej znanych algorytmów reprezentujących to podejście zaliczamy sieci Kohonena - samoograniczające się odwzorowania (ang. self-organizing map). Podczas podawania kolejnych danych uczących, to na sieci spoczywa odpowiedzialność za wytworzenie odpowiednich wzorców w zależności od danych wejściowych.
+\end{itemize}
+Istnieje możliwość wykorzystania obydwu metod uczenia odpowiednio ze sobą złączonych, które są stosowane oraz dają najlepsze rezultaty dla bardzo złożonych problemów.
+ 
+\section{Funkcja aktywacji}
+W sieciach neuronowych funkcja aktywacji odpowiedzialna jest za przekształcenie sumy powstałej przez dodanie iloczynów poszczególnych wag z odpowiadającymi im sygnałami wejściowymi. Wyróżnia się trzy główne typy takich funkcji: progowa, liniowa, sigmoidalna. 
+
+\subsection{Progowa funkcja aktywacji}
+Progowa funkcja aktywacji została przedstawiona przez McCullon'a oraz Pits'a w 1943 roku. Najprostrza funkcja tego typu może być określona wzorem:
+
+
+$$ 
+f(x) = \left\{ \begin{array}{ll}
++1 & \textrm{gdy $x>0$}\\
+-1 & \textrm{gdy $x<0$}\\
+\end{array} \right.
+$$
+
+Funkcja ogranicza się do przypisania zadanej wartości dla wejścia powyżej progu aktywacji. W pozostałych przypadkach neuron otrzymuje stan świadczący o braku jego aktywności.
+
+%TODO Wykres
+
+
+
+\subsection{Liniowa funkcja aktywacji}
+Funkcja liniowa odpowiada za liniowe przekazanie wartości wejściowej na wyjściową po przemnożeniu jej przez odpowiedni współczynnik. Dana jest ona wzorem:
+$$ 
+f(x) = a*x + b
+$$
+
+%TODO Wykres
+
+\subsection{Sigmoidalna funkcja aktywacji}
+Funkcja sigmoidalna jest najczęściej używana w sztucznych sieciach neuronowych ze względu na jej różniczkowalność oraz zachowanie zgodne z głównym własnościami sieci neuronowych. Sigmoidalna funkcja unipolarna charakteryzuje się ona nieliniowym narastaniem w zakresie 0 do 1. Opisana jest wzorem:
+$$ 
+f(x) = \frac{1}{1 + e^{-x}}
+$$
+
+%TODO Wykres
+
+Bardzo często spotyka się również jej rozszerzoną wersję - bipolarną, która opisana jest wzorem tangensa hiperbolicznego:
+$$ 
+f(x) = \frac{1 - e^{-x}}{1 + e^{-x}}
+$$
+
+%TODO Wykres
+
+\section{Perceptron}
+Perceptronem określa się sieć neuronową najprostszego typu, składającej się z neuronów McCullocha-Pittsa. Ich działania oparte jest na klasyfikacji sygnału wejściowego przez ustawieniu odpowiadający mu poziom wartości wyjściowej. Poprawne działanie zarówno tej jak i innych sieci neuronowych wymaga jej wytrenowanie. 
+
+%TODO rysunek percpetronu
+
+Perceptrony posiadają zdolność klasyfikacji danych na charakterystyczne zbiory, które są liniowo separowalne. Własność ta pozwala tworzyć sieci w których aktywność poszczególnego neuronu oznacza przynależność do danego zbioru. Cecha ta uniemożliwia również wytrenowanie sieci, która rozpoznawała by zbyt dużą liczbę zbiorów przy użyciu kilku neuronów np. sieć wykonująca operację logiczną typu and, or, xor wymaga architektury posiadającej więcej niż jeden neuron. 
+
+Ze względu na tą własność pojedynczy neuron nie jest szczególnie użyteczny. Dopiero łączenie neurony równolegle w warstwy, a następnie szeregowe ustawienie kilku warstw powoduje zdecydowany wzrost możliwości danej sieci neuronowej. 
+
+
+
+
+
 
 
