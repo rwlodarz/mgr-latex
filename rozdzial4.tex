@@ -42,7 +42,7 @@ Na podstawie definicji oraz powyższej analizy skutków określono, iż aplikacj
 
 \section{Konfiguracja beaglebone black}
 Ze względu na kontynuację prac nad modelem bazowa konfiguracja beaglebone black wraz z dodatkowymi czujnikami oraz urządzeniami peryferyjnymi opisano w pracy
-% TODO: inz Rwlodarz JZrebiec.
+%TODO: inz Rwlodarz JZrebiec.
 
 W trakcje powstawania niniejszej pracy na rynku dostępne są nowsze czujniki, które mogłyby podnieść jakość oraz częstość pomiarów, jednak ingerencja w konfigurację uniemożliwiła by porównanie algorytmów tradycyjnych z sieciami neuronowym stąd wszystkie testy zostały przeprowadzone na tej samej konfiguracji.
 
@@ -55,13 +55,15 @@ Ze względu na wcześniej wspominaną specyfikę systemu sterującego oraz zasto
 Wprowadzono usprawnienie w postaci instalacji systemu operacyjnego wyposażonego w jądro czasu rzeczywistego (ang. real-time kernel). Jądro to określane jest również jako w pełni wywłaszczalne. Oznacza to, iż dopuszczane jest wywłaszczenie procesu działającego w trybie jądra. Cecha ta wraz z wcześniej narzuconymi priorytetami dla poszczególnych procesów gwarantuje, iż aplikacja sterująca, uruchomiona z wysokim priorytetem nie zostanie wywłaszczona na zbyt długi czas przez inne procesy systemowe.
 
 
-
 Zabieg ten pozwala nam spełnić podstawową cechę systemów czasu rzeczywistego, którą jest punktualność.
 
+\section{Aplikacja sterująca}
+
+Ze względu na powyżej omówione aspekty, do tworzenia aplikacji sterującej wykorzystano język C++. 
 
 
 
-\section{Tworzenie aplikacji niezależnej od platformy sprzętowej}
+\section{Niezależność aplikacji od platformy sprzętowej}
 Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwa uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych do ich budowy procesorów.
 
 Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. 
@@ -77,9 +79,31 @@ Konfiguracja miała na celu uwydatnienie problemu błędu obcięcia liczb zmienn
 \subsection{Testy}
 Do testów wykorzystano komputer stacjonarny z 64 bitowym procesorem Intel i5-4670 3.40 Ghz oraz układ beaglebone black, który został wyposażony w procesor 32 bitowy ARM Cortex-A8 o częstotliwości taktowania 1GHz.
 
-W celu uwydatnienia problemu stworzono sieć neuronową posiadającą po jednej z warstw wejściowej, ukrytej, wyjściowej. Wagi poszczególnych neuronów zostały dobrane w sposób losowy tak, jednak wszystkich z nich wykorzystują maksymalną dostępną dokładność. Następnie na wejście sieci podawana jest stała wartość. Po jej przetworzeniu otrzymujemy wynik  
+W celu uwydatnienia problemu stworzono sieć neuronową posiadającą jedną  warstwę wejściową, ukrytą, wyjściową. Wagi poszczególnych neuronów zostały dobrane w sposób losowy. Konieczne jednak był dobór liczb maksymalnie wykorzystujący precyzje liczby zmiennoprzecinkowej. Następnie na wejście sieci podawana jest stała wartość oraz odczytywane jest wyjście sieci. Kroki te powtarzane są na wszystkich dostępnych platformach sprzętowych,a następnie porównywane są poszczególne wyniki w celu zbadania rozbieżności.
+
+
 
 
 
 
 \section{Architektura systemu sterującego}
+
+Aplikacja sterująca ze względu na zastosowanie algorytmu opartego na sieciach neuronowych nie posiada dedykowanych rozwiązań pod konkretne zagadnienie. Jej budowa opiera się na tworzeniu sztucznej sieci neuronowej oraz dostarczeniu niezbędnych do jej działania funkcji - wczytywania wag dla poszczególnych połączeń oraz algorytmu uczącego. Dodatkowo została ona rozbudowana o system logowania danych, który okazał się bardzo pomocny w wykrywaniu nieprawidłowości w działaniu aplikacji oraz dostarcza dane niezbędne do dogłębnej analizy zagadnienia.
+
+W celu dokładnego zrozumienia architektury oraz szczegółów związanych z implementacją poniżej przedstawiono szczegółowy opis poszczególnych elementów aplikacji:
+\begin{itemize}
+	\item klasa Neuron - 
+	\item klasa Net - odpowiada za pełną reprezentację sieci. Przechowuje w wektorze wszystkie utworzone neurony w uszeregowanych warstwach. W swoim konstruktorze przyjmuje wektor liczb, które odpowiadają za liczbę tworzonych warstw oraz ilości neuronów w każdej z nich. W zależności od konfiguracji inicjowane są wagi wszystkich połączeń. Są one dobierane losowo lub za pomocą wcześniej zdefiniowanych wartości. Wywołanie funkcji feedForward z argumentem w postaci wektora danych wejściowych powoduje przepływ i przetworzenie informacji przez sieć. Wektor wartości wyjściową odczytujemy za pomocą funkcji getResults. Dodatkowo klasa ta została wyposażona w funkcje backProp, która odpowiada za uczenie sieci metodą propagacji wstecznej. 
+	\item kontener Layer - dla lepszego zobrazowania struktury aplikacji neurony reprezentujące poszczególną warstwę są przechowywane w wektorze. 
+	\item struktura Connection - odpowiada za przejrzystą reprezentację synaps w układzie biologicznym. Przetrzymuje ona informacje na temat wagi połączenia, które reprezentuje oraz wartość modyfikacji z procesu uczenia.
+	\item klasa Logger - ze względu na ostre wymagania czasowe utworzono asynchroniczny logger z konfigurowalnymi poziomami logowania. Jego użycie wymaga wywołania funkcji addMsg do której podajemy argument świadczący o priorytecie informacji ERROR, WARNING, INFORMATION, DEBUG oraz jej treści jako następny argument. Wiadomość ta jest dodawana do kolejki, która jest cyklicznie wypisywana do pliku w niezależnym wątku. Zabieg ten pozwala na zabezpieczenie przed ewentualnym przyblokowaniem głównego wątku sterującego w przypadku problemów z dostępem do pliku lub innych nieprawidłowości. Istnieje również możliwość konfiguracji poziomu logowania, jest znacząca cecha w przypadku systemów czasu rzeczywistego. Podczas testów warto posiadać wszystkie informacje na temat działania systemu jednak po ich ukończeniu są one zbędne w przypadku normalnego użytkowania, kiedy istotne są jedynie te informacje które świadczą o błędach w systemie. Nadmiar logowanych danych wpływa negatywnie na czas wykonywania się pętli sterowania oraz przechowywane dane zajmują sporo pamięci w przypadku systemów wbudowanych.
+	Całość została obudowana w wzorzec projektowy Singleton, aby ułatwić dostęp do klasy oraz zabezpieczyć kod przed utworzeniem wielu instancji tego obiektu.
+\end{itemize}
+
+
+\begin{sidewaysfigure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{./include/diagram}
+\caption{Diagram klass aplikacji sterującej.}
+\label{fig:diagram}
+\end{sidewaysfigure}
