@@ -64,7 +64,15 @@ Ze względu na powyżej omówione aspekty, do tworzenia aplikacji sterującej wy
 
 
 \section{Niezależność aplikacji od platformy sprzętowej}
-Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwa uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych do ich budowy procesorów.
+Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwość uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych procesorów. Ponieważ, zagadnienie to jest obszerne autor zdecydował się wyszczególnić jedynie najważniejsze aspekty związane z przenoszeniem kodu napisanego w języku C++ pomiędzy platformami. 
+
+Na podstawie analizy dokonanej w %TODO wsadzic bibliografie artykul
+wybrano najważniejsze zagadnienia:
+\begin{itemize}
+	\item [Przechowywanie wartości typu integer pod typem double] - w systemach 32 bitowych nie występował problem reprezentacji liczb całkowitych przez typ double. Standard języka C++ definiuje, iż zmienna ta posiada do 52 bitów zarezerwowanych na reprezentację takiej liczby. Warto jednak mieć na uwadze, iż w przypadku systemów 64 bitowych liczby całkowite przetrzymywane w typie size\_t posiadają, aż 64 bity przeznaczone do reprezentacji jej zawartości natomiast liczba bitów w przypadku typu double się nie zmienia. Problem ten prowadzi do niepoprawnej reprezentacji wartości całkowitych zajmujących ponad 52 bity przypisywanych do typu double. Wartość ta zostanie obcięta o początkowe 12 bitów.
+\end{itemize}
+
+
 
 Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. 
 
@@ -92,7 +100,7 @@ Aplikacja sterująca ze względu na zastosowanie algorytmu opartego na sieciach 
 
 W celu dokładnego zrozumienia architektury oraz szczegółów związanych z implementacją poniżej przedstawiono szczegółowy opis poszczególnych elementów aplikacji:
 \begin{itemize}
-	\item klasa Neuron - 
+	\item klasa Neuron - jest to najważniejszy element w aplikacji. Jest on odpowiedzialny za 
 	\item klasa Net - odpowiada za pełną reprezentację sieci. Przechowuje w wektorze wszystkie utworzone neurony w uszeregowanych warstwach. W swoim konstruktorze przyjmuje wektor liczb, które odpowiadają za liczbę tworzonych warstw oraz ilości neuronów w każdej z nich. W zależności od konfiguracji inicjowane są wagi wszystkich połączeń. Są one dobierane losowo lub za pomocą wcześniej zdefiniowanych wartości. Wywołanie funkcji feedForward z argumentem w postaci wektora danych wejściowych powoduje przepływ i przetworzenie informacji przez sieć. Wektor wartości wyjściową odczytujemy za pomocą funkcji getResults. Dodatkowo klasa ta została wyposażona w funkcje backProp, która odpowiada za uczenie sieci metodą propagacji wstecznej. 
 	\item kontener Layer - dla lepszego zobrazowania struktury aplikacji neurony reprezentujące poszczególną warstwę są przechowywane w wektorze. 
 	\item struktura Connection - odpowiada za przejrzystą reprezentację synaps w układzie biologicznym. Przetrzymuje ona informacje na temat wagi połączenia, które reprezentuje oraz wartość modyfikacji z procesu uczenia.
