@@ -4,8 +4,38 @@
 Rozdział ten zawiera informacje na temat historii rozwoju sieci neuronowych, ich architektury, zasady działania oraz algorytmów uczenia.
 
 \section{Początki sztucznych sieci neuronowych}
-Początki prac nad poznaniem procesów zachodzących w mózgu datuje się na rok 1943. W pracy McCulloch'a oraz Pitts'a przedstawiono matematyczny model neuronu, który zapoczątkował badania związane z tym tematem. W 1949 roku Donald Hebb odkrył, iż informacje przechowywane w sieci neuronowej są reprezentowane jako wartości wag pomiędzy poszczególnymi neuronami. Na podstawie tych informacji zaproponował on pierwszy algorytm uczenia sieci neuronowej, który został nazwany regułą Hebba. Już wtedy odkryto, iż bardzo dużą zaletą sieci jest równoległy sposób przetwarzania informacji oraz metodologia uczenia, która zastępuje tradycyjny proces programowania. 
-%TODO dopisać więcej !!
+Początki prac nad poznaniem procesów zachodzących w mózgu datuje się na rok 1943. W pracy McCulloch'a oraz Pitts'a przedstawiono matematyczny model neuronu, który zapoczątkował badania związane z tym tematem. W 1949 roku Donald Hebb odkrył, iż informacje przechowywane w sieci neuronowej są reprezentowane jako wartości wag pomiędzy poszczególnymi neuronami. Na podstawie tych informacji zaproponował on pierwszy algorytm uczenia sieci neuronowej, który został nazwany regułą Hebba. Już wtedy odkryto, iż bardzo dużą zaletą sieci jest równoległy sposób przetwarzania informacji oraz metodologia uczenia, która zastępuje tradycyjny proces programowania. Pierwszym przykładem realizacji sztucznej sieci neuronowej jest Perceptron, został on zbudowany w 1957 roku przez Franka Rosenblatta i Charlesa Wightmana. Sieć ta została nauczona rozpoznawania znaków alfanumerycznych. Niestety projekt ten nie okazał się w pełni sukcesem ponieważ sieć była wrażliwa na zmianę wielkości podawanych znaków oraz nie radziła sobie z bardziej skomplikowanymi. Dzieło to wzbudziło zainteresowanie na całym świecie, spowodowało to wzrost zainteresowania sieciami neuronowymi wśród naukowców. Powstawało ciekawych prac, które wpływały na rozwój tej dziedziny. Badania te zostały spowolnione przez ujawnienie się w 1969 roku książki Minskiego i Paperta noszącą tytuł Perceptrons, która dowodziła, że jednowarstwowe sieci mają bardzo ograniczone możliwości. 
+Dopiero od połowy lat 80-tych, zagadnieniem tym oprócz naukowców zaczęły się interesować firmy komercyjne. Było to spowodowane dwoma głównymi czynnikami, wydaniem książki w 1988 roku przez Jamesa Andresona oraz rozwojem technologii układów mogących modelować coraz bardziej złożone sztuczne sieci neuronowe.
+
+\section{Zastosowanie sieci neuronowych}
+Rozwój nauki poświęconej sztucznym siecią neuronowym oraz znaczny postęp techniki umożliwia stosowanie sieci neuronowych w prawie każdej dziedzinie naszego życia. Do najważniejszych z nich można zaliczyć:
+
+\begin{itemize}
+	\item prognozy giełdowe,
+	\item analiza badań medycznych,
+	\item sterowanie systemem zasilania oraz chłodzenia serwerowni,
+	\item optymalizacja działalności handlowej,
+	\item kryminalistyka,
+	\item sterowanie procesów przemysłowych,
+	\item przemysł lotniczy
+\end{itemize}
+
+Ze względu na wszechstronność zastosowania sieci neuronowych oraz ich odpowiedników do rozwiązywania bardziej złożonych zagadnień, głębokich sieci neuronowych (ang. Deep Neural Network), stosuje się ich podział oparty na ich możliwościach, dedykowanych rodzinach problemu do których zostały przystosowane zamiast dziedzin nauki do jakich są wykorzystywane.
+Sieci neuronowe mogą być wykorzystywane do:
+%TODO WG TADE ?
+
+\begin{itemize}
+	\item Perdykcja. Ich głównym zadaniem jest przewidywanie określonych sytuacji na podstawie danych wejściowych. Zagadnienie to jest wykorzystywane do prognozy giełdowej, prognozy ekonomicznego rozwoju, prognozy rynkowej, oceny zdolności kredytowej oraz wiele innych. Wprowadzanie sieci neuronowych do tych zagadnień pozwala na przewidywanie poszczególnych wyników bez głębszego rozumienia problemu. Bardzo ważną zaletą jest brak potrzeby określania dokładnych hipotez świadczących o powiązaniu wejścia z wyjściem. Podczas procesu nauczania sieć sama dostosowuje się do zagadnienia na podstawie danych uczących. Często skutkuje to większą skutecznością w rozwiązywaniu problemów takich jak prognozy giełdowe w stosunku do tradycyjnych aplikacji. Powodem tego zjawiska jest to, iż aplikacje do gry na giełdzie bazują na wprowadzonych przez
+	%TODO Poworzenie!
+	człowieka zależnościach, natomiast sieci neuronowe same dobierają sobie kryterium według którego reagują na poszczególne wejścia.
+	\item Klasyfikacja i rozpoznawania przedmiotów. Zagadnienie to jest bardzo często rozwiązywane przy sztucznych sieci neuronowych. Stosowane jest ono również do zastosowań ekonomicznych gdzie na podstawie wcześniej określonych etapów przyporządkuje jedne z nich do przedsiębiorstwa na podstawie wejść sieci świadczących o jego stanie. Podczas uczenia sieci wychwytuje ona charakterystyczne cechy poszczególnego wejścia, a następnie przypisuje im konkretne wyjście. Rozwiązywanie tego typu problemów za pomocą sztucznych sieci neuronowych okazuje się bardzo wygodne ponieważ w przypadku zmiany zagadnienia wymagane jest jedynie powtórzenie procesu nauki bez ingerencji w implementację. Jest to zdecydowanie bardzo duża zaleta w stosunku do tradycyjnych aplikacji, ponieważ nie są one uniwersalne, co powoduje ogromne koszty wszelakich modyfikacji, które dorównują tworzeniu ich od nowa.
+	\item Kojarzenia danych. Bardzo często rozwiązaniem wielu problemu jest błyskotliwe kojarzenie różnych faktów. W porównaniu do tradycyjnych systemów sieci neuronowe, dzięki zdolności uczenia, adaptacji pozwalają na kojarzenie różnorodnych danych ze sobą. Czego efektem jest uzyskiwanie przejrzystych informacji na wyjściu sieci bez potrzeby analizy szczegółowych, nadmiarowych danych z których wyciągnięcie wniosków wymaga żmudnej i długotrwałej analizy. 
+	\item Analizy danych. Zagadnienie to opiera się na wykryciu związków przyczynowo skutkowych w zbiorze wejściowym. Jest to bardzo istotny problem ze względu na częste fałszywe wnioski wyciągane przez ludzi. Sztuczne sieci neuronowe pozwalają na rzeczywiste wykrycie przyczyny sukcesu jak i niepowodzenia poszczególnych operacji. W oparciu o taki mechanizm, na podstawie przeszłości podejmowanie decyzji staje się zdecydowanie łatwiejsze, jak i również minimalizuje ryzyko popełnienia wcześniejszych błędów.
+	\item Filtracji sygnałów. Technika ta jest głównie wykorzystywana w telekomunikacji oraz automatycznej diagnostyce medycznej. Odgrywa ona znaczącą rolę dla rozwoju tych dziedzin. Całe zagadnienie opiera się na usuwaniu zakłóceń pochodzących z różnych źródeł. Są one wykorzystywane do wstępnej obróbki danych z których eliminowane są nie tylko zakłócenia o charakterze losowym jak i również celowe przekłamania. Dodatkowo tradycyjne metody nie mają możliwości uzupełniania niekompletnych danych, co w przypadku sztucznych sieci neuronowych odbywa się szczególnie prosto.
+	\item Optymalizacja. Jest to prawdopodobnie jedno z najważniejszych zagadnień dla każdej dziedziny nauk technicznych. Problemy te są rozwiązywane przez wykorzystywanie tzw. sieci Hopfielda, która rozwiązuje zagadnienia poszukiwania optymalnych decyzji. Sieci te są stosowane do rozwiązywania zagadnień optymalizacji kombinatorycznej, które są znane z ogromnej złożoności obliczeniowej - niektóre z nich są problemami NP-zupełnymi. Ich największym atutem jest czas w którym znajdują rozwiązanie, jest on nieporównywalnie mniejszy dzięki współbieżności obliczeniowej. 
+\end{itemize}
+
+Warto zaznaczyć, iż również w przypadku sterowania na bardzo dużą skalę wprowadza się algorytmy oparte na sztucznych sieciach neuronowych. Zagadnienie to jest głównym tematem niniejszej pracy stąd zastosowanie sieci neuronowej do tych zagadnień zostało opisane w późniejszych rozdziałach.
 
 \section{Sztuczne sieci neuronowe}
 Sztuczne sieci neuronowe są często określane jako początki sztucznej inteligencji ze względu na ich sposób działania, który przypomina działanie ludzkiego mózgu. Korzystanie z sieci neuronowych wymaga przejścia przez dwa podstawowe etapy, pierwszy z nich określany jest jako uczenie sieci, a drugi testowanie, które jest używane do oceny poprawności działania sieci po jej wytrenowaniu. Istnieją różne algorytmy uczenia sieci neuronowej, najpopularniejszy z nich nazywany jest perceptron wielowarstwowy (ang. multilayer perceptron). Polega on na propagacji danych w przód, a następnie przy użyciu algorytmu wstecznej propagacji, modyfikacji odpowiednich wag neuronów. Sztuczne sieci neuronowe są uznawane jako skuteczna metoda do rozpoznawania wzorców. W ich skład wchodzą połączenia między neuronami jaki same neurony, które równolegle przetwarzają dane wejściowe. Podejście to zostało zainspirowane z biologicznego systemu nerwowego.
@@ -194,18 +224,8 @@ w^{'}_i - w_{i} = \Delta w_{i} = - \eta \frac{\delta Q}{\delta w_{i}}
 \label{eq:delta_member}
 \end{equation}
 
-W algorytmie backpropagation wyróżnia się poszczególne etapy:
-\begin{enumerate}
-	\item test
-	\item test2
-	\item test3
-\end{enumerate}
 
-
-Podczas efektywnej nauki korekty wag wraz z błędem na wyjściu sieci maleją z upływem czasu nauczania sieci. Zostaje on zakończony, gdy zostanie wykonana odpowiednia liczba iteracji na zbiorze uczącym lub błąd na wyjściu będzie poniżej zadanego progu. 
-
-
-
+Reasumując, proces nauczania sieci opiera się na korekcji wag poszczególnych połączeń między neuronami co powoduje minimalizowanie błędu na wyjściu sieci. Zostaje on zakończony, gdy zostanie wykonana odpowiednia liczba iteracji na zbiorze uczącym lub błąd na wyjściu będzie poniżej zadanego progu. Bardzo często spotyka się również algorytmy uczące, które zaprzestają działania gdy wprowadzane modyfikacje w następnych iteracjach są poniżej określonego progu.
 
 
 

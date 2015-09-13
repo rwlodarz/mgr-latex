@@ -57,41 +57,6 @@ Wprowadzono usprawnienie w postaci instalacji systemu operacyjnego wyposażonego
 
 Zabieg ten pozwala nam spełnić podstawową cechę systemów czasu rzeczywistego, którą jest punktualność.
 
-\section{Aplikacja sterująca}
-
-Ze względu na powyżej omówione aspekty, do tworzenia aplikacji sterującej wykorzystano język C++. 
-
-
-
-\section{Niezależność aplikacji od platformy sprzętowej}
-Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwość uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych procesorów. Ponieważ, zagadnienie to jest obszerne autor zdecydował się wyszczególnić jedynie najważniejsze aspekty związane z przenoszeniem kodu napisanego w języku C++ pomiędzy platformami. 
-
-Na podstawie analizy dokonanej w %TODO wsadzic bibliografie artykul
-wybrano najważniejsze zagadnienia:
-\begin{itemize}
-	\item [Przechowywanie wartości typu integer pod typem double] - w systemach 32 bitowych nie występował problem reprezentacji liczb całkowitych przez typ double. Standard języka C++ definiuje, iż zmienna ta posiada do 52 bitów zarezerwowanych na reprezentację takiej liczby. Warto jednak mieć na uwadze, iż w przypadku systemów 64 bitowych liczby całkowite przetrzymywane w typie size\_t posiadają, aż 64 bity przeznaczone do reprezentacji jej zawartości natomiast liczba bitów w przypadku typu double się nie zmienia. Problem ten prowadzi do niepoprawnej reprezentacji wartości całkowitych zajmujących ponad 52 bity przypisywanych do typu double. Wartość ta zostanie obcięta o początkowe 12 bitów.
-\end{itemize}
-
-
-
-Podstawowa wersja aplikacji została poddana testom, które porównały wyniki działania sieci neuronowej na 2 całkowicie odmiennych platformach. 
-
-
-\subsection{Najważniejsze aspekty}
-Pierwszym, a zarazem najważniejszym aspektem jest problem, który może powstać podczas mnożenia liczb zmiennoprzecinkowych. W przypadku wykonywania tej operacji dwie liczby reprezentowane w postaci binarnej o z góry określonej liczbie dostępnych bitów o określonej liczbie bitów  wynik zapisywany jest do zmiennej o określonej liczbie bitów, co wiąże się z uzyskaniem błędu odcięcia w przypadku nie wystarczającej liczbie bitów potrzebnych do reprezentacji części ułamkowej. 
-
-
-
-Konfiguracja miała na celu uwydatnienie problemu błędu obcięcia liczb zmiennoprzecinkowych 
-
-\subsection{Testy}
-Do testów wykorzystano komputer stacjonarny z 64 bitowym procesorem Intel i5-4670 3.40 Ghz oraz układ beaglebone black, który został wyposażony w procesor 32 bitowy ARM Cortex-A8 o częstotliwości taktowania 1GHz.
-
-W celu uwydatnienia problemu stworzono sieć neuronową posiadającą jedną  warstwę wejściową, ukrytą, wyjściową. Wagi poszczególnych neuronów zostały dobrane w sposób losowy. Konieczne jednak był dobór liczb maksymalnie wykorzystujący precyzje liczby zmiennoprzecinkowej. Następnie na wejście sieci podawana jest stała wartość oraz odczytywane jest wyjście sieci. Kroki te powtarzane są na wszystkich dostępnych platformach sprzętowych,a następnie porównywane są poszczególne wyniki w celu zbadania rozbieżności.
-
-
-
-
 
 
 \section{Architektura systemu sterującego}
@@ -100,7 +65,10 @@ Aplikacja sterująca ze względu na zastosowanie algorytmu opartego na sieciach 
 
 W celu dokładnego zrozumienia architektury oraz szczegółów związanych z implementacją poniżej przedstawiono szczegółowy opis poszczególnych elementów aplikacji:
 \begin{itemize}
-	\item klasa Neuron - jest to najważniejszy element w aplikacji. Jest on odpowiedzialny za 
+	\item klasa Neuron - jest to najważniejszy element w aplikacji. Jest on odpowiedzialny za przekazywanie odpowiednio przetworzonego sygnału z jego wejść na wyjście. Dodatkowo znajdują się w nim konieczne do realizacji algorytmu propagacji wstecznej informacje oraz funkcje. Posiada dostęp do wartości współczynników $\eta$ oraz $\alpha$, które są niezbędne do parametryzowania 
+	
+	
+	Został on również wyposażony w indeks, który odpowiada jego miejscu w warstwie. Nie jest to informacje konieczna do poprawnego działania sieci jednak zdecydowanie ułatwia podgląd przepływu informacji przez sieć neuronową.  
 	\item klasa Net - odpowiada za pełną reprezentację sieci. Przechowuje w wektorze wszystkie utworzone neurony w uszeregowanych warstwach. W swoim konstruktorze przyjmuje wektor liczb, które odpowiadają za liczbę tworzonych warstw oraz ilości neuronów w każdej z nich. W zależności od konfiguracji inicjowane są wagi wszystkich połączeń. Są one dobierane losowo lub za pomocą wcześniej zdefiniowanych wartości. Wywołanie funkcji feedForward z argumentem w postaci wektora danych wejściowych powoduje przepływ i przetworzenie informacji przez sieć. Wektor wartości wyjściową odczytujemy za pomocą funkcji getResults. Dodatkowo klasa ta została wyposażona w funkcje backProp, która odpowiada za uczenie sieci metodą propagacji wstecznej. 
 	\item kontener Layer - dla lepszego zobrazowania struktury aplikacji neurony reprezentujące poszczególną warstwę są przechowywane w wektorze. 
 	\item struktura Connection - odpowiada za przejrzystą reprezentację synaps w układzie biologicznym. Przetrzymuje ona informacje na temat wagi połączenia, które reprezentuje oraz wartość modyfikacji z procesu uczenia.
@@ -115,3 +83,43 @@ W celu dokładnego zrozumienia architektury oraz szczegółów związanych z imp
 \caption{Diagram klass aplikacji sterującej.}
 \label{fig:diagram}
 \end{sidewaysfigure}
+
+\section{Niezależność aplikacji od platformy sprzętowej}
+Dobrze zaprojektowana aplikacja sterująca obiektami latającymi powinna mieć możliwość uruchomienia na różnorodnych platformach sprzętowych, bez względu na architekturę wykorzystanych procesorów. Ponieważ, zagadnienie to jest obszerne autor zdecydował się wyszczególnić jedynie najważniejsze aspekty związane z przenoszeniem kodu napisanego w języku C++ pomiędzy platformami. 
+
+Na podstawie analizy dokonanej przez autora w wybrano najważniejsze zagadnienia, które powodują różne działania aplikacji w zależności od systemu:
+\begin{itemize}
+	\item przechowywanie wartości typu integer pod typem double - w systemach 32 bitowych nie występował problem reprezentacji liczb całkowitych przez typ double. Standard języka C++ definiuje, iż zmienna ta posiada do 52 bitów zarezerwowanych na reprezentację takiej liczby. Warto jednak mieć na uwadze, iż w przypadku systemów 64 bitowych liczby całkowite przetrzymywane w typie size\_t posiadają, aż 64 bity przeznaczone do reprezentacji jej zawartości natomiast liczba bitów w przypadku typu double się nie zmienia. Problem ten prowadzi do niepoprawnej reprezentacji wartości całkowitych zajmujących ponad 52 bity przypisywanych do typu double. Wartość ta zostanie obcięta o początkowe 12 bitów. Zaleca się unikanie takich przypisań.
+	
+	\item operacje przesunięć bitowych - aplikacje dedykowane na systemy wbudowane często wykorzystują niskopoziomowe operacje takie jak przesunięcia bitowe. Przesunięcie bitowe liczby 0x00000001 o 32 miejsca w lewą stronę powoduje różne wyniki z zależności od architektury procesora. W przypadku systemu x86 otrzymamy wartość 0x00000000, a system x64 zwróci 0x00000000100000000. W przypadku odczytu takich wartości może to zdecydowanie wpłynąć na działanie aplikacji. Problem ten często rozwiązywany jest za pomocą definiowanie maksymalnego przesunięcia w pliku nagłówkowym - o 32 lub 64 bity w zależności od systemu.
+	
+	\item operacje mnożenia liczb zmiennoprzecinkowych -  operacja ta jest bardzo znanym zagadnieniem dającą odmienne wyniki z zależności od ilości bitów przewidzianych na poszczególną z liczb oraz wynik do którego przypisywany jest iloczyn. Ma to związek z uzyskaniem błędu odcięcia w przypadku nie wystarczającej liczbie bitów potrzebnych do reprezentacji części ułamkowej.
+\end{itemize}
+
+Na podstawie powyższych przykładów można zauważyć, iż możliwe jest stworzenie aplikacji której kod można przenosić pomiędzy różnymi architekturami. Nie mniej jednak warto zauważyć, że wymaga to sporo wiedzy na temat wykorzystywanych narzędzi oraz umiejętnego wykonywania wszelakich operacji na liczbach. Podejście to pozwala z wyeliminować błędy związane z dwoma pierwszym zagadnieniami. Trzeci problem wymaga jednak sprzętowego lub programowego zabezpieczenia przed tego typu zagrożeniami. Ze względu na ostatnie zagadnienie do implementacji sieci neuronowej wybrano język C++. Posiada on zdefiniowany standard, który gwarantuje, iż bez względu na system operacje zmiennoprzecinkowe na typach double gwarantują uzyskanie tego samego wyniku. Jest to bardzo ważne cecha, która zaważyła na tym, iż omawiana aplikacja została stworzona właśnie w tym języku. Warto mieć jednak na uwadze, iż operacje pomiędzy różnymi typami np. iloczyn float oraz double może powodować już komplikacje stąd należy ich unikać.
+
+Podstawowa wersja aplikacji została poddana testom, które przez porównanie wyników działania sieci neuronowej na 2 całkowicie odmiennych platformach stanowią informację o możliwości stosowania implementacji na różnych systemach.
+ 
+\subsection{Testy}
+Do testów wykorzystano komputer stacjonarny z 64 bitowym procesorem Intel i5-4670 3.40 Ghz oraz układ beaglebone black, który został wyposażony w procesor 32 bitowy ARM Cortex-A8 o częstotliwości taktowania 1GHz.
+
+W celu uwydatnienia problemu stworzono sieć neuronową posiadającą jedną  warstwę wejściową, ukrytą, wyjściową. Wagi poszczególnych neuronów zostały dobrane w sposób losowy. Konieczne jednak był dobór liczb, które maksymalnie wykorzystują precyzje liczby zmiennoprzecinkowej typu double. Następnie na wejście sieci podawana jest stała wartość oraz odczytywane jest wyjście sieci. Kroki te powtarzane są na  dostępnych platformach sprzętowych. Wyniki poszczególnych operacji są logowane, a następnie porównywane z ich odpowiednikami na innej platformie sprzętowej w celu zbadania rozbieżności.
+
+Poniżej przedstawiono ogólny szkic testowanej topologi sieci z uwzględnieniem wag połączeń.
+
+\section{Aplikacja sterująca}
+
+Ze względu na powyżej omówione aspekty, do tworzenia aplikacji sterującej wykorzystano język C++. 
+
+\begin{itemize}
+	\item 1
+	\item 2
+	\item 3
+	\item 4
+	\item 5
+	\item 6
+\end{itemize}
+
+
+
+
