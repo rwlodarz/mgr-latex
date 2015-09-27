@@ -21,8 +21,7 @@ Rozwój nauki poświęconej sztucznym siecią neuronowym oraz znaczny postęp te
 \end{itemize}
 
 Ze względu na wszechstronność zastosowania sieci neuronowych oraz ich odpowiedników, służących do rozwiązywania bardziej złożonych zagadnień głębokich sieci neuronowych (ang. Deep Neural Network), stosuje się ich podział oparty na możliwościach, dedykowanych rodzinach problemu, do których zostały przystosowane zamiast dziedzin nauki do jakich są wykorzystywane.
-Sieci neuronowe mogą być wykorzystywane do:
-%TODO WG TADE ?
+W swojej książce prof. Ryszard Tadeusiewicz opisuje główne zastosowania sieci neuronowych \cite{tade93}:
 
 \begin{itemize}
 	\item Predykcji - ich głównym zadaniem jest przewidywanie określonych sytuacji na podstawie danych wejściowych. Zagadnienie to jest wykorzystywane do prognozy giełdowej, prognozy ekonomicznego rozwoju, prognozy rynkowej, oceny zdolności kredytowej oraz wiele innych. Wprowadzanie sieci neuronowych w takich przypadkach pozwala na przewidywanie poszczególnych wyników bez głębszego rozumienia problemu. Bardzo ważną zaletą jest brak potrzeby określania dokładnych hipotez świadczących o powiązaniu wejścia z wyjściem. Podczas procesu nauczania sieć sama dostosowuje się do zagadnienia na podstawie danych uczących. Często skutkuje to większą efektywnością w rozwiązywaniu problemów takich jak prognozy giełdowe w stosunku do tradycyjnych aplikacji. Powodem tego zjawiska jest to, iż aplikacje do gry na giełdzie bazują na wprowadzonych przez człowieka zależnościach, natomiast sieci neuronowe same dobierają sobie kryterium, według którego reagują na poszczególne wejścia.
@@ -159,12 +158,16 @@ Ze względu na tą własność pojedyncza warstwa neuronów nie jest szczególni
 
 \section{Backpropagation}
 
-Do najbardziej popularnych algorytmów uczenia sieci zaliczany jest algorytm wstecznej propagacji błędu (ang. backpropagation). Głównym założeniem tego procesu jest korekcja wag wszystkich połączeń w sieci, które wpłynęły na zwiększenie błędu wynikającego z różnicy wartości oczekiwanej i rzeczywistej. W bardzo jasny oraz szczegółowy sposób algorytm został przedstawiony w książce TODO tadeusiewicz. %TODO tadeusiewicz.
+Do najbardziej popularnych algorytmów uczenia sieci zaliczany jest algorytm wstecznej propagacji błędu (ang. backpropagation). Głównym założeniem tego procesu jest korekcja wag wszystkich połączeń w sieci, które wpłynęły na zwiększenie błędu wynikającego z różnicy wartości oczekiwanej i rzeczywistej. W bardzo jasny oraz szczegółowy sposób algorytm został przedstawiony w książce \cite{tade93}.
 
-Wyróżnia się dwie najważniejsze fazy. Pierwszą z nich jest faza propagacji w przód, która podaje na wejście sieci wybrany wektor wejściowy ze zbioru danych uczących oraz odczytuje sygnał wyjściowy. Następną fazę określa się jako propagację wsteczną. Jej działanie rozpoczyna się od ostatniej warstwy sieci, do której podawana jest wartość błędu. Wykonywanie odwrotnych obliczeń wzdłuż sieci pozwala na wykrycie, które wagi wpłynęły na zwiększenie błędu a następnie korekcję ich wartości tak, aby zminimalizować błąd.
+Wyróżnia się dwie najważniejsze fazy. Pierwszą z nich jest faza propagacji w przód, która podaje na wejście sieci wybrany wektor wejściowy ze zbioru danych uczących oraz odczytuje sygnał wyjściowy. Następną fazę określa się jako propagację wsteczną. Jej działanie rozpoczyna się od ostatniej warstwy sieci, do której podawana jest wartość błędu. Wykonywanie odwrotnych obliczeń wzdłuż sieci pozwala na wykrycie, które wagi wpłynęły na zwiększenie błędu, a następnie korekcję ich wartości tak, aby zminimalizować błąd. Proces ten został zobrazowany na rysunku \ref{fig:back_propagation_flow}.
 
-%TODO RYSUNEK
-TODO RYSUNEK
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\linewidth]{./include/backprop_flow}
+\caption{Przebieg procesu propagacji w przód oraz propagacji wstecznej.}
+\label{fig:back_propagation_flow}
+\end{figure}
 
 Ze względu na istotne znaczenie tego procesu poniżej przedstawiono dokładny opis jego działania przedstawiony na pojedynczym neuronie.
 Aby przystąpić do fazy nauki sieci należy odpowiednio przygotować zbiór danych uczących. Dane uczące dobierane są w ciąg o budowie opisanej wzorem \ref{eq:learning_data}.

@@ -1,3 +1,19 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{YOWT10}
+
+\bibitem[Tad93]{tade93}
+R.~Tadeusiewicz.
+\newblock {\em Sieci Neuronowe}.
+\newblock Akademia Oficyna Wydawnicza, Warszawa, 1993.
+
+\bibitem[YOWT10]{Dong-Wan}
+Dong-Wan Yoo, Hyon-Dong Oh, Dae-Yeon Won, and Min-Jea Tahk.
+\newblock Dynamic {M}odeling and {C}ontrol {S}ystem {D}esign for {T}ri-rotor
+  {UAV}.
+\newblock {\em Department of Aerospace Engineering, Korea Advanced Institute of
+  Science and Technology}, pages 762--767, 2010.
+
+\bibitem[ZW13]{inz}
+J.~\'Zrebiec and R.~Włodarz.
+\newblock Laboratoryjny model tricoptera, 2013.
 
 \end{thebibliography}
